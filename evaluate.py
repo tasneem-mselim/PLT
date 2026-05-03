@@ -43,6 +43,21 @@ labels = pd.read_csv(labels_csv)
 labels = labels.rename(columns={"label": "true_label"})
 submission = submission.rename(columns={"label": "pred_label"})
 
+############################################################################
+# DEBUGGING
+print(f"Labels ID column: {labels.columns.tolist()}")
+print(f"Submission ID column: {submission.columns.tolist()}")
+print(f"Sample Submission IDs: {submission['id'].head().values}")
+print(f"Sample Label IDs: {labels['id'].head().values}")
+
+merged = pd.merge(labels, submission, on="id")
+
+# Check if merged is empty
+if merged.empty:
+    print("Error: The merge resulted in an empty dataframe! No matching IDs found.")
+    sys.exit(1)
+#######################################################################################
+
 merged = pd.merge(labels, submission, on="id")
 
 y_true = merged["true_label"]
